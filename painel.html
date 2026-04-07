@@ -49,6 +49,8 @@
     .campo-acao textarea { min-height: 60px; resize: vertical; }
     .btn-salvar { padding: 8px 18px; background: #4a6cf7; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .btn-salvar:hover { background: #3a5ce5; }
+    .btn-excluir-chamado { padding: 8px 18px; background: transparent; border: 1px solid #e53935; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; color: #e53935; }
+    .btn-excluir-chamado:hover { background: #fdecea; }
     .filtros { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
     .filtros input, .filtros select { padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; background: #fff; }
     .filtros input { flex: 1; min-width: 160px; }
@@ -232,6 +234,7 @@
               <textarea id="obs-${c.id}" placeholder="Adicione uma observação...">${c.observacao || ''}</textarea>
             </div>
             <button class="btn-salvar" onclick="salvar('${c.id}')">Salvar</button>
+            <button class="btn-excluir-chamado" onclick="excluirChamado('${c.id}')">Excluir</button>
           </div>
         </div>`;
     }).join('');
@@ -265,6 +268,15 @@
       document.getElementById('aviso-desc').value = '';
     } catch(e) {
       alert('Erro ao publicar aviso.');
+    }
+  }
+
+  window.excluirChamado = async function(id) {
+    if (!confirm('Tem certeza que deseja excluir este chamado? Essa ação não pode ser desfeita.')) return;
+    try {
+      await deleteDoc(doc(db, 'chamados', id));
+    } catch(e) {
+      alert('Erro ao excluir chamado.');
     }
   }
 
