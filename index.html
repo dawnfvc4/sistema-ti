@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suporte de TI</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f4f6f9; min-height: 100vh; padding: 1.5rem 1rem; }
+    .topo { text-align: center; margin-bottom: 1.5rem; }
+    .topo h1 { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+    .topo p { font-size: 14px; color: #666; margin-top: 4px; }
+    .nav { display: flex; justify-content: center; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .nav-btn { padding: 9px 20px; border-radius: 8px; border: 1.5px solid #d0d0d0; background: #fff; font-size: 14px; cursor: pointer; color: #555; font-weight: 500; transition: all 0.15s; }
+    .nav-btn.ativo { background: #4a6cf7; color: #fff; border-color: #4a6cf7; }
+    .nav-btn:hover:not(.ativo) { background: #f0f0f0; }
+    .nav-btn.avisos-btn { border-color: #f59e0b; color: #b45309; }
+    .nav-btn.avisos-btn.ativo { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+    .nav-btn.avisos-btn:hover:not(.ativo) { background: #fef3c7; }
+    .card { background: #fff; border-radius: 12px; border: 1px solid #e0e0e0; padding: 1.75rem; width: 100%; max-width: 540px; margin: 0 auto; }
+    label { display: block; font-size: 13px; font-weight: 500; color: #444; margin-bottom: 4px; margin-top: 14px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; color: #222; background: #fff; outline: none; transition: border 0.2s; }
+    input:focus, select:focus, textarea:focus { border-color: #4a6cf7; }
+    textarea { resize: vertical; min-height: 100px; }
+    button.btn-primary { width: 100%; margin-top: 1.5rem; padding: 12px; background: #4a6cf7; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    button.btn-primary:hover { background: #3a5ce5; }
+    button.btn-primary:disabled { background: #a0aec0; cursor: not-allowed; }
+    .erro { color: #c0392b; font-size: 12px; margin-top: 3px; display: none; }
+    .sucesso { display: none; text-align: center; padding: 1.5rem 1rem; }
+    .sucesso .icon { font-size: 48px; }
+    .sucesso h2 { font-size: 20px; color: #1a1a2e; margin: 12px 0 6px; }
+    .sucesso p { font-size: 14px; color: #666; }
+    .sucesso button { margin-top: 1rem; padding: 10px 24px; background: #4a6cf7; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; }
+    .lista-wrapper { max-width: 720px; margin: 0 auto; }
+    .filtros { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .filtros input, .filtros select { padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; background: #fff; }
+    .filtros input { flex: 1; min-width: 160px; }
+    .chamado-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 1.25rem; margin-bottom: 12px; }
+    .chamado-card.finalizado-card { border-left: 4px solid #34a853; }
+    .chamado-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .chamado-titulo { font-size: 15px; font-weight: 600; color: #1a1a2e; }
+    .chamado-meta { font-size: 12px; color: #888; margin-top: 3px; }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+    .badge-aberto { background: #e8f0fe; color: #1a73e8; }
+    .badge-trabalhando { background: #fff3e0; color: #e65100; }
+    .badge-finalizado { background: #e6f4ea; color: #1e7e34; }
+    .chamado-desc { font-size: 14px; color: #444; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; line-height: 1.5; }
+    .previsao-bloco { margin-top: 6px; font-size: 12px; color: #888; }
+    .obs-bloco { margin-top: 10px; background: #fffde7; border-left: 3px solid #f9a825; border-radius: 0 8px 8px 0; padding: 8px 12px; font-size: 13px; color: #555; }
+    .lista-vazia { text-align: center; padding: 3rem; color: #aaa; font-size: 14px; }
+    .carregando { text-align: center; padding: 3rem; color: #aaa; font-size: 14px; }
+    .aviso-card { background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 10px; padding: 1.25rem; margin-bottom: 12px; }
+    .aviso-titulo { font-size: 16px; font-weight: 700; color: #92400e; display: flex; align-items: center; gap: 8px; }
+    .aviso-desc { font-size: 14px; color: #78350f; margin-top: 8px; line-height: 1.6; }
+    .aviso-data { font-size: 11px; color: #b45309; margin-top: 8px; }
+    .avisos-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
+    .avisos-header h2 { font-size: 16px; font-weight: 600; color: #92400e; }
+    .pulsing { display: inline-block; width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  </style>
+</head>
+<body>
+
+<div class="topo">
+  <h1>🖥️ Suporte de TI</h1>
+  <p>Abra um chamado ou acompanhe o status dos atendimentos</p>
+</div>
+
+<div class="nav">
+  <button class="nav-btn ativo" onclick="mudarAba('abrir', this)">Abrir chamado</button>
+  <button class="nav-btn" onclick="mudarAba('ver', this)">Ver chamados</button>
+  <button class="nav-btn" onclick="mudarAba('finalizados', this)">Finalizados</button>
+  <button class="nav-btn avisos-btn" onclick="mudarAba('avisos', this)">⚠️ Avisos do TI</button>
+</div>
+
+<!-- ABA: ABRIR CHAMADO -->
+<div id="aba-abrir">
+  <div class="card">
+    <div id="formulario">
+      <label>Seu nome *</label>
+      <input type="text" id="nome" placeholder="Ex: João Silva" />
+      <div class="erro" id="erro-nome">Por favor, informe seu nome.</div>
+
+      <label>Empresa *</label>
+      <select id="empresa">
+        <option value="">Selecione sua empresa...</option>
+        <option>Marca Couros</option>
+        <option>SMX Dourados</option>
+        <option>SMX Manaus</option>
+        <option>Berseba</option>
+      </select>
+      <div class="erro" id="erro-empresa">Por favor, selecione sua empresa.</div>
+
+      <label>Descreva o problema *</label>
+      <textarea id="descricao" placeholder="Descreva com detalhes o que está acontecendo..."></textarea>
+      <div class="erro" id="erro-descricao">Por favor, descreva o problema.</div>
+
+      <button class="btn-primary" id="btn-enviar" onclick="enviarChamado()">Enviar chamado</button>
+    </div>
+    <div class="sucesso" id="sucesso">
+      <div class="icon">✅</div>
+      <h2>Chamado enviado!</h2>
+      <p>Recebemos seu pedido. Acompanhe o status na aba <strong>Ver chamados</strong>.</p>
+      <button onclick="novoChamado()">Abrir outro chamado</button>
+    </div>
+  </div>
+</div>
+
+<!-- ABA: VER CHAMADOS -->
+<div id="aba-ver" style="display:none;">
+  <div class="lista-wrapper">
+    <div class="filtros">
+      <input type="text" id="busca-ver" placeholder="Buscar por nome ou empresa..." oninput="filtrarAtivos()" />
+      <select id="filtro-empresa-ver" onchange="filtrarAtivos()">
+        <option value="">Todas as empresas</option>
+        <option>Marca Couros</option>
+        <option>SMX Dourados</option>
+        <option>SMX Manaus</option>
+        <option>Berseba</option>
+      </select>
+    </div>
+    <div id="lista-ativos"><div class="carregando">Carregando chamados...</div></div>
+  </div>
+</div>
+
+<!-- ABA: FINALIZADOS -->
+<div id="aba-finalizados" style="display:none;">
+  <div class="lista-wrapper">
+    <div class="filtros">
+      <input type="text" id="busca-fin" placeholder="Buscar por nome ou empresa..." oninput="filtrarFinalizados()" />
+      <select id="filtro-empresa-fin" onchange="filtrarFinalizados()">
+        <option value="">Todas as empresas</option>
+        <option>Marca Couros</option>
+        <option>SMX Dourados</option>
+        <option>SMX Manaus</option>
+        <option>Berseba</option>
+      </select>
+    </div>
+    <div id="lista-finalizados"><div class="carregando">Carregando chamados...</div></div>
+  </div>
+</div>
+
+<!-- ABA: AVISOS -->
+<div id="aba-avisos" style="display:none;">
+  <div class="lista-wrapper">
+    <div class="avisos-header">
+      <span class="pulsing"></span>
+      <h2>Avisos e tarefas importantes do TI</h2>
+    </div>
+    <div id="lista-avisos"><div class="carregando">Carregando avisos...</div></div>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB-_IbnqRoaFSrQ-56vF3z87p3zyRr1rw0",
+    authDomain: "chamados-ti-18409.firebaseapp.com",
+    projectId: "chamados-ti-18409",
+    storageBucket: "chamados-ti-18409.firebasestorage.app",
+    messagingSenderId: "261416236280",
+    appId: "1:261416236280:web:4f3e26833e9fe14d9bb70d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const statusLabel = { aberto: 'Aberto', trabalhando: 'Em andamento', finalizado: 'Finalizado' };
+
+  // Cache dos dados para filtros locais
+  let todosAtivos = [];
+  let todosFinalizados = [];
+  let todosAvisos = [];
+
+  // Escuta em tempo real — chamados ativos
+  const qAtivos = query(collection(db, 'chamados'), where('status', '!=', 'finalizado'), orderBy('status'), orderBy('criadoEm', 'desc'));
+  onSnapshot(qAtivos, snap => {
+    todosAtivos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    filtrarAtivos();
+  });
+
+  // Escuta em tempo real — finalizados
+  const qFin = query(collection(db, 'chamados'), where('status', '==', 'finalizado'), orderBy('criadoEm', 'desc'));
+  onSnapshot(qFin, snap => {
+    todosFinalizados = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    filtrarFinalizados();
+  });
+
+  // Escuta em tempo real — avisos
+  const qAvisos = query(collection(db, 'avisos'), orderBy('criadoEm', 'desc'));
+  onSnapshot(qAvisos, snap => {
+    todosAvisos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderizarAvisos();
+  });
+
+  function cardHtml(c, finalizado = false) {
+    const data = c.criadoEm ? new Date(c.criadoEm.seconds * 1000).toLocaleString('pt-BR') : '—';
+    return `
+      <div class="chamado-card ${finalizado ? 'finalizado-card' : ''}">
+        <div class="chamado-header">
+          <div>
+            <div class="chamado-titulo">${c.nome} — ${c.empresa}</div>
+            <div class="chamado-meta">${data}</div>
+            ${c.previsao ? `<div class="previsao-bloco">📅 Previsão: ${c.previsao}</div>` : ''}
+          </div>
+          <div class="badges">
+            <span class="badge badge-${c.status}">${statusLabel[c.status]}</span>
+          </div>
+        </div>
+        <div class="chamado-desc">${c.descricao}</div>
+        ${c.observacao ? `<div class="obs-bloco">📝 Obs. TI: ${c.observacao}</div>` : ''}
+      </div>`;
+  }
+
+  window.filtrarAtivos = function() {
+    const busca = document.getElementById('busca-ver').value.toLowerCase();
+    const emp = document.getElementById('filtro-empresa-ver').value;
+    let lista = todosAtivos;
+    if (busca) lista = lista.filter(c => c.nome.toLowerCase().includes(busca) || c.empresa.toLowerCase().includes(busca));
+    if (emp) lista = lista.filter(c => c.empresa === emp);
+    const el = document.getElementById('lista-ativos');
+    el.innerHTML = lista.length === 0 ? '<div class="lista-vazia">Nenhum chamado ativo no momento.</div>' : lista.map(c => cardHtml(c)).join('');
+  }
+
+  window.filtrarFinalizados = function() {
+    const busca = document.getElementById('busca-fin').value.toLowerCase();
+    const emp = document.getElementById('filtro-empresa-fin').value;
+    let lista = todosFinalizados;
+    if (busca) lista = lista.filter(c => c.nome.toLowerCase().includes(busca) || c.empresa.toLowerCase().includes(busca));
+    if (emp) lista = lista.filter(c => c.empresa === emp);
+    const el = document.getElementById('lista-finalizados');
+    el.innerHTML = lista.length === 0 ? '<div class="lista-vazia">Nenhum chamado finalizado ainda.</div>' : lista.map(c => cardHtml(c, true)).join('');
+  }
+
+  function renderizarAvisos() {
+    const el = document.getElementById('lista-avisos');
+    el.innerHTML = todosAvisos.length === 0
+      ? '<div class="lista-vazia">Nenhum aviso do TI no momento.</div>'
+      : todosAvisos.map(a => {
+          const data = a.criadoEm ? new Date(a.criadoEm.seconds * 1000).toLocaleString('pt-BR') : '—';
+          return `
+            <div class="aviso-card">
+              <div class="aviso-titulo">⚠️ ${a.titulo}</div>
+              <div class="aviso-desc">${a.descricao}</div>
+              <div class="aviso-data">Publicado em ${data}</div>
+            </div>`;
+        }).join('');
+  }
+
+  window.enviarChamado = async function() {
+    const nome = document.getElementById('nome').value.trim();
+    const empresa = document.getElementById('empresa').value;
+    const descricao = document.getElementById('descricao').value.trim();
+
+    document.getElementById('erro-nome').style.display = !nome ? 'block' : 'none';
+    document.getElementById('erro-empresa').style.display = !empresa ? 'block' : 'none';
+    document.getElementById('erro-descricao').style.display = !descricao ? 'block' : 'none';
+
+    if (!nome || !empresa || !descricao) return;
+
+    const btn = document.getElementById('btn-enviar');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+      await addDoc(collection(db, 'chamados'), {
+        nome, empresa, descricao,
+        status: 'aberto',
+        previsao: '',
+        observacao: '',
+        criadoEm: { seconds: Math.floor(Date.now() / 1000) }
+      });
+      document.getElementById('formulario').style.display = 'none';
+      document.getElementById('sucesso').style.display = 'block';
+    } catch (e) {
+      alert('Erro ao enviar. Tente novamente.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar chamado';
+    }
+  }
+
+  window.novoChamado = function() {
+    document.getElementById('formulario').style.display = 'block';
+    document.getElementById('sucesso').style.display = 'none';
+    document.getElementById('nome').value = '';
+    document.getElementById('empresa').value = '';
+    document.getElementById('descricao').value = '';
+  }
+
+  window.mudarAba = function(aba, el) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('ativo'));
+    el.classList.add('ativo');
+    document.getElementById('aba-abrir').style.display = aba === 'abrir' ? 'block' : 'none';
+    document.getElementById('aba-ver').style.display = aba === 'ver' ? 'block' : 'none';
+    document.getElementById('aba-finalizados').style.display = aba === 'finalizados' ? 'block' : 'none';
+    document.getElementById('aba-avisos').style.display = aba === 'avisos' ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>

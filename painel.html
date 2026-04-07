@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel TI</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f4f6f9; min-height: 100vh; }
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
+    .login-card { background: #fff; border-radius: 12px; border: 1px solid #e0e0e0; padding: 2rem; width: 100%; max-width: 360px; text-align: center; }
+    .login-card h1 { font-size: 20px; color: #1a1a2e; margin-bottom: 4px; }
+    .login-card p { font-size: 13px; color: #888; margin-bottom: 1.5rem; }
+    .login-card input { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; margin-bottom: 10px; outline: none; }
+    .login-card input:focus { border-color: #4a6cf7; }
+    .login-card button { width: 100%; padding: 11px; background: #4a6cf7; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .login-card button:hover { background: #3a5ce5; }
+    .login-erro { color: #c0392b; font-size: 13px; margin-top: 8px; display: none; }
+    #painel { display: none; }
+    .topbar { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .topbar h1 { font-size: 17px; font-weight: 600; color: #1a1a2e; }
+    .topbar button { padding: 7px 16px; background: transparent; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; cursor: pointer; color: #555; }
+    .topbar button:hover { background: #f0f0f0; }
+    .tabs { display: flex; gap: 4px; padding: 1rem 1.5rem 0; border-bottom: 1px solid #e0e0e0; background: #fff; flex-wrap: wrap; }
+    .tab { padding: 9px 18px; border-radius: 8px 8px 0 0; font-size: 14px; cursor: pointer; color: #666; border: 1px solid transparent; border-bottom: none; transition: all 0.15s; }
+    .tab:hover { background: #f0f0f0; }
+    .tab.ativo { background: #f4f6f9; color: #4a6cf7; font-weight: 600; border-color: #e0e0e0; }
+    .tab.tab-avisos { color: #b45309; }
+    .tab.tab-avisos.ativo { color: #92400e; background: #fffbeb; border-color: #f59e0b; }
+    .conteudo { padding: 1.5rem; }
+    .lista-vazia { text-align: center; padding: 3rem; color: #aaa; font-size: 14px; }
+    .carregando { text-align: center; padding: 3rem; color: #aaa; font-size: 14px; }
+    .chamado-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 1.25rem; margin-bottom: 12px; }
+    .chamado-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .chamado-titulo { font-size: 15px; font-weight: 600; color: #1a1a2e; }
+    .chamado-meta { font-size: 12px; color: #888; margin-top: 3px; }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+    .badge-aberto { background: #e8f0fe; color: #1a73e8; }
+    .badge-trabalhando { background: #fff3e0; color: #e65100; }
+    .badge-finalizado { background: #e6f4ea; color: #1e7e34; }
+    .chamado-desc { font-size: 14px; color: #444; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; line-height: 1.5; }
+    .previsao-bloco { margin-top: 6px; font-size: 12px; color: #888; }
+    .obs-bloco { margin-top: 10px; background: #fffde7; border-left: 3px solid #f9a825; border-radius: 0 8px 8px 0; padding: 8px 12px; font-size: 13px; color: #555; }
+    .chamado-acoes { margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+    .campo-acao { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 140px; }
+    .campo-acao label { font-size: 12px; color: #888; font-weight: 500; margin: 0; }
+    .campo-acao select, .campo-acao input, .campo-acao textarea { padding: 7px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; width: 100%; }
+    .campo-acao textarea { min-height: 60px; resize: vertical; }
+    .btn-salvar { padding: 8px 18px; background: #4a6cf7; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .btn-salvar:hover { background: #3a5ce5; }
+    .filtros { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .filtros input, .filtros select { padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; background: #fff; }
+    .filtros input { flex: 1; min-width: 160px; }
+    .aviso-form { background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.5rem; }
+    .aviso-form h3 { font-size: 15px; font-weight: 600; color: #92400e; margin-bottom: 1rem; }
+    .aviso-form input, .aviso-form textarea { width: 100%; padding: 9px 12px; border: 1px solid #f59e0b; border-radius: 8px; font-size: 14px; outline: none; margin-bottom: 10px; background: #fff; }
+    .aviso-form textarea { min-height: 80px; resize: vertical; }
+    .btn-aviso { padding: 9px 20px; background: #f59e0b; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-aviso:hover { background: #d97706; }
+    .aviso-card { background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 10px; padding: 1.25rem; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .aviso-corpo { flex: 1; }
+    .aviso-titulo-txt { font-size: 15px; font-weight: 700; color: #92400e; }
+    .aviso-desc-txt { font-size: 14px; color: #78350f; margin-top: 6px; line-height: 1.5; }
+    .aviso-data-txt { font-size: 11px; color: #b45309; margin-top: 8px; }
+    .btn-excluir { padding: 5px 12px; background: transparent; border: 1px solid #f59e0b; border-radius: 6px; font-size: 12px; color: #b45309; cursor: pointer; white-space: nowrap; }
+    .btn-excluir:hover { background: #fde68a; }
+  </style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-card">
+    <h1>🔐 Painel TI</h1>
+    <p>Acesso restrito à equipe de TI</p>
+    <input type="text" id="usuario" placeholder="Usuário" />
+    <input type="password" id="senha" placeholder="Senha" onkeydown="if(event.key==='Enter') fazerLogin()" />
+    <button onclick="fazerLogin()">Entrar</button>
+    <div class="login-erro" id="login-erro">Usuário ou senha incorretos.</div>
+  </div>
+</div>
+
+<div id="painel">
+  <div class="topbar">
+    <h1>🖥️ Painel de Chamados TI</h1>
+    <button onclick="sair()">Sair</button>
+  </div>
+  <div class="tabs">
+    <div class="tab ativo" onclick="mudarAba('abertos', this)">Abertos</div>
+    <div class="tab" onclick="mudarAba('andamento', this)">Em andamento</div>
+    <div class="tab" onclick="mudarAba('finalizados', this)">Finalizados</div>
+    <div class="tab tab-avisos" onclick="mudarAba('avisos', this)">⚠️ Avisos / Tarefas</div>
+  </div>
+  <div class="conteudo">
+    <div id="conteudo-chamados">
+      <div class="filtros">
+        <input type="text" id="busca" placeholder="Buscar por nome, empresa..." oninput="filtrarChamados()" />
+        <select id="filtro-empresa" onchange="filtrarChamados()">
+          <option value="">Todas as empresas</option>
+          <option>Marca Couros</option>
+          <option>SMX Dourados</option>
+          <option>SMX Manaus</option>
+          <option>Berseba</option>
+        </select>
+      </div>
+      <div id="lista-chamados"><div class="carregando">Carregando...</div></div>
+    </div>
+    <div id="conteudo-avisos" style="display:none;">
+      <div class="aviso-form">
+        <h3>⚠️ Publicar novo aviso ou tarefa</h3>
+        <input type="text" id="aviso-titulo" placeholder="Título do aviso..." />
+        <textarea id="aviso-desc" placeholder="Descreva o aviso ou tarefa..."></textarea>
+        <button class="btn-aviso" onclick="publicarAviso()">Publicar aviso</button>
+      </div>
+      <div id="lista-avisos-painel"><div class="carregando">Carregando...</div></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB-_IbnqRoaFSrQ-56vF3z87p3zyRr1rw0",
+    authDomain: "chamados-ti-18409.firebaseapp.com",
+    projectId: "chamados-ti-18409",
+    storageBucket: "chamados-ti-18409.firebasestorage.app",
+    messagingSenderId: "261416236280",
+    appId: "1:261416236280:web:4f3e26833e9fe14d9bb70d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const USUARIO = 'admin';
+  const SENHA = 'ti2024';
+  let abaAtual = 'abertos';
+  let todosChamados = [];
+  let todosAvisos = [];
+
+  const statusLabel = { aberto: 'Aberto', trabalhando: 'Em andamento', finalizado: 'Finalizado' };
+
+  // Escuta em tempo real — todos os chamados
+  const qChamados = query(collection(db, 'chamados'), orderBy('criadoEm', 'desc'));
+  onSnapshot(qChamados, snap => {
+    todosChamados = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    filtrarChamados();
+  });
+
+  // Escuta em tempo real — avisos
+  const qAvisos = query(collection(db, 'avisos'), orderBy('criadoEm', 'desc'));
+  onSnapshot(qAvisos, snap => {
+    todosAvisos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderizarAvisos();
+  });
+
+  window.fazerLogin = function() {
+    const u = document.getElementById('usuario').value.trim();
+    const s = document.getElementById('senha').value;
+    if (u === USUARIO && s === SENHA) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('painel').style.display = 'block';
+    } else {
+      document.getElementById('login-erro').style.display = 'block';
+    }
+  }
+
+  window.sair = function() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('painel').style.display = 'none';
+    document.getElementById('usuario').value = '';
+    document.getElementById('senha').value = '';
+  }
+
+  window.mudarAba = function(aba, el) {
+    abaAtual = aba;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+    el.classList.add('ativo');
+    const ehAviso = aba === 'avisos';
+    document.getElementById('conteudo-chamados').style.display = ehAviso ? 'none' : 'block';
+    document.getElementById('conteudo-avisos').style.display = ehAviso ? 'block' : 'none';
+    if (!ehAviso) filtrarChamados();
+  }
+
+  window.filtrarChamados = function() {
+    const busca = document.getElementById('busca').value.toLowerCase();
+    const emp = document.getElementById('filtro-empresa').value;
+    let lista = todosChamados;
+
+    if (abaAtual === 'abertos') lista = lista.filter(c => c.status === 'aberto');
+    else if (abaAtual === 'andamento') lista = lista.filter(c => c.status === 'trabalhando');
+    else if (abaAtual === 'finalizados') lista = lista.filter(c => c.status === 'finalizado');
+
+    if (busca) lista = lista.filter(c => c.nome.toLowerCase().includes(busca) || c.empresa.toLowerCase().includes(busca));
+    if (emp) lista = lista.filter(c => c.empresa === emp);
+
+    const el = document.getElementById('lista-chamados');
+    if (lista.length === 0) { el.innerHTML = '<div class="lista-vazia">Nenhum chamado encontrado.</div>'; return; }
+
+    el.innerHTML = lista.map(c => {
+      const data = c.criadoEm ? new Date(c.criadoEm.seconds * 1000).toLocaleString('pt-BR') : '—';
+      return `
+        <div class="chamado-card">
+          <div class="chamado-header">
+            <div>
+              <div class="chamado-titulo">${c.nome} — ${c.empresa}</div>
+              <div class="chamado-meta">${data}</div>
+              ${c.previsao ? `<div class="previsao-bloco">📅 Previsão: ${c.previsao}</div>` : ''}
+            </div>
+            <div class="badges">
+              <span class="badge badge-${c.status}">${statusLabel[c.status]}</span>
+            </div>
+          </div>
+          <div class="chamado-desc">${c.descricao}</div>
+          ${c.observacao ? `<div class="obs-bloco">📝 Obs. TI: ${c.observacao}</div>` : ''}
+          <div class="chamado-acoes">
+            <div class="campo-acao">
+              <label>Status</label>
+              <select id="status-${c.id}">
+                <option value="aberto" ${c.status==='aberto'?'selected':''}>Aberto</option>
+                <option value="trabalhando" ${c.status==='trabalhando'?'selected':''}>Trabalhando</option>
+                <option value="finalizado" ${c.status==='finalizado'?'selected':''}>Finalizado</option>
+              </select>
+            </div>
+            <div class="campo-acao">
+              <label>Previsão</label>
+              <input type="text" id="prev-${c.id}" value="${c.previsao || ''}" placeholder="Ex: 27/04 às 14h" />
+            </div>
+            <div class="campo-acao" style="flex:2;min-width:200px;">
+              <label>Observação do TI</label>
+              <textarea id="obs-${c.id}" placeholder="Adicione uma observação...">${c.observacao || ''}</textarea>
+            </div>
+            <button class="btn-salvar" onclick="salvar('${c.id}')">Salvar</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  window.salvar = async function(id) {
+    const btn = event.target;
+    btn.textContent = 'Salvando...';
+    btn.disabled = true;
+    try {
+      await updateDoc(doc(db, 'chamados', id), {
+        status: document.getElementById('status-' + id).value,
+        previsao: document.getElementById('prev-' + id).value,
+        observacao: document.getElementById('obs-' + id).value
+      });
+    } catch(e) {
+      alert('Erro ao salvar. Tente novamente.');
+    } finally {
+      btn.textContent = 'Salvar';
+      btn.disabled = false;
+    }
+  }
+
+  window.publicarAviso = async function() {
+    const titulo = document.getElementById('aviso-titulo').value.trim();
+    const descricao = document.getElementById('aviso-desc').value.trim();
+    if (!titulo || !descricao) { alert('Preencha o título e a descrição.'); return; }
+    try {
+      await addDoc(collection(db, 'avisos'), { titulo, descricao, criadoEm: serverTimestamp() });
+      document.getElementById('aviso-titulo').value = '';
+      document.getElementById('aviso-desc').value = '';
+    } catch(e) {
+      alert('Erro ao publicar aviso.');
+    }
+  }
+
+  window.excluirAviso = async function(id) {
+    if (!confirm('Excluir este aviso?')) return;
+    try {
+      await deleteDoc(doc(db, 'avisos', id));
+    } catch(e) {
+      alert('Erro ao excluir aviso.');
+    }
+  }
+
+  function renderizarAvisos() {
+    const el = document.getElementById('lista-avisos-painel');
+    el.innerHTML = todosAvisos.length === 0
+      ? '<div class="lista-vazia">Nenhum aviso publicado ainda.</div>'
+      : todosAvisos.map(a => {
+          const data = a.criadoEm ? new Date(a.criadoEm.seconds * 1000).toLocaleString('pt-BR') : '—';
+          return `
+            <div class="aviso-card">
+              <div class="aviso-corpo">
+                <div class="aviso-titulo-txt">⚠️ ${a.titulo}</div>
+                <div class="aviso-desc-txt">${a.descricao}</div>
+                <div class="aviso-data-txt">Publicado em ${data}</div>
+              </div>
+              <button class="btn-excluir" onclick="excluirAviso('${a.id}')">Excluir</button>
+            </div>`;
+        }).join('');
+  }
+</script>
+</body>
+</html>
