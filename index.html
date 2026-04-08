@@ -4,169 +4,255 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Suporte TI</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:       #0e0e10;
-      --bg2:      #141416;
-      --bg3:      #1c1c1f;
-      --border:   #2a2a2e;
-      --border2:  #3a3a3f;
-      --text:     #e8e8ea;
-      --muted:    #666670;
-      --muted2:   #888892;
-      --accent:   #e8e8ea;
-      --green:    #22c55e;
-      --amber:    #d4a017;
-      --blue:     #4f7fff;
-      --red:      #ef4444;
-      --mono:     'IBM Plex Mono', monospace;
-      --sans:     'IBM Plex Sans', sans-serif;
+      --bg:        #f7f7f8;
+      --surface:   #ffffff;
+      --surface2:  #f2f2f4;
+      --border:    #e4e4e8;
+      --border2:   #d0d0d6;
+      --text:      #111114;
+      --text2:     #5a5a6a;
+      --text3:     #9a9aaa;
+      --accent:    #111114;
+      --green:     #16a34a;
+      --green-bg:  #f0fdf4;
+      --green-b:   #bbf7d0;
+      --amber:     #b45309;
+      --amber-bg:  #fffbeb;
+      --amber-b:   #fde68a;
+      --blue:      #1d4ed8;
+      --blue-bg:   #eff6ff;
+      --blue-b:    #bfdbfe;
+      --red:       #dc2626;
+      --red-bg:    #fef2f2;
+      --red-b:     #fecaca;
+      --sans:      'Geist', sans-serif;
+      --mono:      'Geist Mono', monospace;
+      --radius:    8px;
+      --radius-lg: 12px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; -webkit-font-smoothing: antialiased; }
 
     /* TOPBAR */
-    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 44px; border-bottom: 1px solid var(--border); background: var(--bg2); }
-    .topbar-brand { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--muted2); letter-spacing: 0.08em; text-transform: uppercase; }
-    .topbar-brand span { color: var(--text); }
+    .topbar { height: 52px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; position: sticky; top: 0; z-index: 10; }
+    .topbar-left { display: flex; align-items: center; gap: 10px; }
+    .topbar-icon { width: 28px; height: 28px; background: var(--text); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+    .topbar-icon svg { width: 15px; height: 15px; stroke: white; fill: none; stroke-width: 2; }
+    .topbar-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .topbar-sub { font-size: 12px; color: var(--text3); margin-left: 2px; }
 
     /* NAV */
-    .nav { display: flex; border-bottom: 1px solid var(--border); background: var(--bg2); padding: 0 20px; gap: 0; }
-    .nav-btn { padding: 10px 16px; font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--muted); background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; letter-spacing: 0.03em; transition: all 0.15s; white-space: nowrap; }
+    .nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; overflow-x: auto; }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav-btn { display: flex; align-items: center; gap: 6px; padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--text2); background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+    .nav-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.75; flex-shrink: 0; }
     .nav-btn:hover { color: var(--text); }
     .nav-btn.ativo { color: var(--text); border-bottom-color: var(--text); }
     .nav-btn.avisos-btn.ativo { color: var(--amber); border-bottom-color: var(--amber); }
     .nav-btn.avisos-btn:hover { color: var(--amber); }
 
-    /* CONTEÚDO */
-    .content { padding: 20px; max-width: 680px; margin: 0 auto; }
-    .content.wide { max-width: 860px; }
+    /* LAYOUT */
+    .page { padding: 24px; max-width: 640px; margin: 0 auto; }
+    .page.wide { max-width: 880px; }
 
-    /* FORMULÁRIO */
-    .section-label { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
-    .field { margin-bottom: 12px; }
-    .field label { display: block; font-size: 11px; font-weight: 500; color: var(--muted2); margin-bottom: 5px; letter-spacing: 0.04em; }
+    /* FORM CARD */
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+    .form-title { font-size: 15px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .form-title svg { width: 16px; height: 16px; stroke: var(--text2); fill: none; stroke-width: 1.75; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
     .field input, .field select, .field textarea {
-      width: 100%; padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px;
-      color: var(--text); font-family: var(--sans); font-size: 13px; outline: none; transition: border 0.15s;
+      width: 100%; padding: 9px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); font-family: var(--sans); font-size: 13px; outline: none; transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--border2); }
-    .field select option { background: var(--bg3); }
-    .field textarea { resize: vertical; min-height: 90px; }
-    .field-erro { font-size: 11px; color: var(--red); margin-top: 3px; display: none; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--border2); box-shadow: 0 0 0 3px rgba(17,17,20,0.06); background: white; }
+    .field textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+    .field-erro { font-size: 11px; color: var(--red); margin-top: 4px; display: none; }
 
-    .btn { padding: 8px 16px; border-radius: 4px; font-family: var(--sans); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; letter-spacing: 0.03em; }
-    .btn-block { width: 100%; margin-top: 16px; padding: 10px; font-size: 13px; }
-    .btn-solid { background: var(--text); color: var(--bg); border-color: var(--text); }
-    .btn-solid:hover { background: #c8c8ca; }
-    .btn-solid:disabled { background: var(--border2); color: var(--muted); cursor: not-allowed; border-color: var(--border2); }
-    .btn-ghost { background: transparent; color: var(--muted2); border-color: var(--border); }
-    .btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: var(--radius); font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+    .btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .btn-full { width: 100%; justify-content: center; padding: 10px; margin-top: 4px; }
+    .btn-primary { background: var(--text); color: white; }
+    .btn-primary:hover { background: #2a2a30; }
+    .btn-primary:disabled { background: var(--border2); color: var(--text3); cursor: not-allowed; }
+    .btn-outline { background: white; color: var(--text2); border-color: var(--border); }
+    .btn-outline:hover { border-color: var(--border2); color: var(--text); }
+    .btn-danger { background: white; color: var(--red); border-color: var(--border); }
+    .btn-danger:hover { background: var(--red-bg); border-color: var(--red-b); }
+    .btn-amber { background: var(--amber); color: white; border-color: var(--amber); }
+    .btn-amber:hover { background: #9a4508; }
 
     /* SUCESSO */
-    .sucesso { display: none; padding: 2rem 1rem; text-align: center; }
-    .sucesso-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
-    .sucesso-icon svg { width: 16px; height: 16px; stroke: var(--green); fill: none; stroke-width: 2; }
-    .sucesso h2 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
-    .sucesso p { font-size: 12px; color: var(--muted2); line-height: 1.6; }
-    .sucesso .btn { margin-top: 14px; }
+    .sucesso { display: none; padding: 40px 20px; text-align: center; }
+    .sucesso-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--green-bg); border: 1px solid var(--green-b); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .sucesso-icon svg { width: 20px; height: 20px; stroke: var(--green); fill: none; stroke-width: 2.5; }
+    .sucesso h2 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .sucesso p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+    .sucesso .btn { margin: 16px auto 0; }
 
     /* FILTROS */
-    .filtros { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .filtros { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
     .filtros input, .filtros select {
-      padding: 7px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px;
-      color: var(--text); font-family: var(--sans); font-size: 12px; outline: none;
+      padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); font-family: var(--sans); font-size: 13px; outline: none; transition: border-color 0.15s;
     }
+    .filtros input:focus, .filtros select:focus { border-color: var(--border2); }
     .filtros input { flex: 1; min-width: 160px; }
-    .filtros select option { background: var(--bg3); }
 
-    /* CARDS CHAMADO */
-    .chamado-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 12px 14px; margin-bottom: 6px; transition: border-color 0.15s; }
-    .chamado-card:hover { border-color: var(--border2); }
-    .chamado-card.finalizado-card { border-left: 2px solid var(--green); }
-    .chamado-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .chamado-nome { font-size: 13px; font-weight: 500; color: var(--text); }
-    .chamado-empresa { font-size: 11px; color: var(--muted2); margin-top: 1px; }
-    .chamado-data { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 2px; }
-    .chamado-previsao { font-family: var(--mono); font-size: 10px; color: var(--muted2); margin-top: 2px; }
-    .badge { padding: 2px 8px; border-radius: 2px; font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.05em; }
-    .badge-aberto { background: rgba(79,127,255,0.12); color: var(--blue); border: 1px solid rgba(79,127,255,0.25); }
-    .badge-trabalhando { background: rgba(212,160,23,0.12); color: var(--amber); border: 1px solid rgba(212,160,23,0.25); }
-    .badge-finalizado { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
-    .chamado-desc { font-size: 12px; color: var(--muted2); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); line-height: 1.6; }
-    .obs-bloco { margin-top: 8px; padding: 7px 10px; background: rgba(212,160,23,0.06); border-left: 2px solid var(--amber); font-size: 11px; color: var(--muted2); line-height: 1.5; }
-    .obs-label { font-family: var(--mono); font-size: 10px; color: var(--amber); margin-bottom: 2px; }
+    /* CHAMADO CARD */
+    .chamado-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 8px; transition: box-shadow 0.15s; }
+    .chamado-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .chamado-card.finalizado-card { border-left: 3px solid var(--green); }
+    .chamado-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .chamado-info { flex: 1; }
+    .chamado-nome { font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+    .chamado-nome svg { width: 13px; height: 13px; stroke: var(--text3); fill: none; stroke-width: 1.75; flex-shrink: 0; }
+    .chamado-empresa { font-size: 12px; color: var(--text2); margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+    .chamado-empresa svg { width: 11px; height: 11px; stroke: var(--text3); fill: none; stroke-width: 1.75; }
+    .chamado-data { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-top: 4px; }
+    .chamado-previsao { font-size: 11px; color: var(--text2); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+    .chamado-previsao svg { width: 11px; height: 11px; stroke: var(--text2); fill: none; stroke-width: 1.75; }
+
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid; white-space: nowrap; }
+    .badge svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .badge-aberto { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-b); }
+    .badge-trabalhando { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-b); }
+    .badge-finalizado { background: var(--green-bg); color: var(--green); border-color: var(--green-b); }
+
+    .chamado-desc { font-size: 13px; color: var(--text2); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); line-height: 1.65; }
+    .obs-bloco { margin-top: 10px; padding: 10px 12px; background: var(--amber-bg); border: 1px solid var(--amber-b); border-radius: var(--radius); }
+    .obs-label { font-size: 10px; font-weight: 600; color: var(--amber); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; }
+    .obs-label svg { width: 10px; height: 10px; stroke: var(--amber); fill: none; stroke-width: 2; }
+    .obs-texto { font-size: 12px; color: var(--text2); line-height: 1.55; }
+
+    /* AÇÕES DO PAINEL */
+    .chamado-acoes { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
+    .campo-acao { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; }
+    .campo-acao label { font-size: 11px; font-weight: 500; color: var(--text2); }
+    .campo-acao select, .campo-acao input, .campo-acao textarea {
+      padding: 7px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); font-family: var(--sans); font-size: 12px; outline: none; width: 100%;
+    }
+    .campo-acao textarea { min-height: 56px; resize: vertical; }
+    .acoes-btns { display: flex; gap: 6px; align-self: flex-end; }
 
     /* AVISOS */
-    .aviso-card { background: var(--bg2); border: 1px solid rgba(212,160,23,0.3); border-left: 2px solid var(--amber); border-radius: 4px; padding: 12px 14px; margin-bottom: 6px; }
-    .aviso-titulo { font-size: 13px; font-weight: 500; color: var(--text); }
-    .aviso-desc { font-size: 12px; color: var(--muted2); margin-top: 5px; line-height: 1.6; }
-    .aviso-data { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 6px; }
-    .avisos-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-    .avisos-header-label { font-family: var(--mono); font-size: 10px; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; }
-    .dot-amber { width: 6px; height: 6px; background: var(--amber); border-radius: 50%; animation: pulse 1.8s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .avisos-topo { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .avisos-topo svg { width: 16px; height: 16px; stroke: var(--amber); fill: none; stroke-width: 1.75; }
+    .avisos-topo-label { font-size: 13px; font-weight: 600; color: var(--text); }
+    .dot { width: 7px; height: 7px; background: var(--amber); border-radius: 50%; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
 
-    .lista-vazia { padding: 2rem; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--muted); }
-    .carregando { padding: 2rem; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .aviso-form { background: var(--surface); border: 1px solid var(--amber-b); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; }
+    .aviso-form-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+    .aviso-form-title svg { width: 14px; height: 14px; stroke: var(--amber); fill: none; stroke-width: 1.75; }
+    .aviso-form input, .aviso-form textarea {
+      width: 100%; padding: 8px 11px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); font-family: var(--sans); font-size: 13px; outline: none; margin-bottom: 8px;
+    }
+    .aviso-form textarea { min-height: 72px; resize: vertical; }
+
+    .aviso-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; transition: box-shadow 0.15s; }
+    .aviso-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .aviso-card-icon { width: 32px; height: 32px; border-radius: var(--radius); background: var(--amber-bg); border: 1px solid var(--amber-b); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .aviso-card-icon svg { width: 15px; height: 15px; stroke: var(--amber); fill: none; stroke-width: 1.75; }
+    .aviso-corpo { flex: 1; }
+    .aviso-titulo-txt { font-size: 13px; font-weight: 600; color: var(--text); }
+    .aviso-desc-txt { font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.6; }
+    .aviso-data-txt { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+    .lista-vazia { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .lista-vazia svg { width: 32px; height: 32px; stroke: var(--border2); fill: none; stroke-width: 1.5; }
+    .carregando { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; }
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-brand">TI / <span>Suporte</span></div>
+  <div class="topbar-left">
+    <div class="topbar-icon">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    </div>
+    <span class="topbar-title">Suporte TI</span>
+  </div>
 </div>
 
 <div class="nav">
-  <button class="nav-btn ativo" onclick="mudarAba('abrir', this)">Novo chamado</button>
-  <button class="nav-btn" onclick="mudarAba('ver', this)">Em aberto</button>
-  <button class="nav-btn" onclick="mudarAba('finalizados', this)">Finalizados</button>
-  <button class="nav-btn avisos-btn" onclick="mudarAba('avisos', this)">Avisos</button>
+  <button class="nav-btn ativo" onclick="mudarAba('abrir', this)">
+    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    Novo chamado
+  </button>
+  <button class="nav-btn" onclick="mudarAba('ver', this)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Em aberto
+  </button>
+  <button class="nav-btn" onclick="mudarAba('finalizados', this)">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    Finalizados
+  </button>
+  <button class="nav-btn avisos-btn" onclick="mudarAba('avisos', this)">
+    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Avisos
+  </button>
 </div>
 
-<!-- ABA: ABRIR -->
+<!-- ABA: NOVO CHAMADO -->
 <div id="aba-abrir">
-  <div class="content">
-    <div id="formulario">
-      <div class="section-label" style="margin-top:4px;">Novo chamado</div>
-      <div class="field">
-        <label>Nome</label>
-        <input type="text" id="nome" placeholder="Seu nome completo" />
-        <div class="field-erro" id="erro-nome">Campo obrigatório.</div>
+  <div class="page">
+    <div class="form-card">
+      <div id="formulario">
+        <div class="form-title">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Abrir chamado
+        </div>
+        <div class="field">
+          <label>Nome completo</label>
+          <input type="text" id="nome" placeholder="Seu nome" />
+          <div class="field-erro" id="erro-nome">Campo obrigatório.</div>
+        </div>
+        <div class="field">
+          <label>Empresa</label>
+          <select id="empresa">
+            <option value="">Selecione a empresa...</option>
+            <option>Marca Couros</option>
+            <option>SMX Dourados</option>
+            <option>SMX Manaus</option>
+            <option>Berseba</option>
+          </select>
+          <div class="field-erro" id="erro-empresa">Campo obrigatório.</div>
+        </div>
+        <div class="field">
+          <label>Descrição do problema</label>
+          <textarea id="descricao" placeholder="Descreva o que está acontecendo com o máximo de detalhes..."></textarea>
+          <div class="field-erro" id="erro-descricao">Campo obrigatório.</div>
+        </div>
+        <button class="btn btn-primary btn-full" id="btn-enviar" onclick="enviarChamado()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Enviar chamado
+        </button>
       </div>
-      <div class="field">
-        <label>Empresa</label>
-        <select id="empresa">
-          <option value="">Selecione...</option>
-          <option>Marca Couros</option>
-          <option>SMX Dourados</option>
-          <option>SMX Manaus</option>
-          <option>Berseba</option>
-        </select>
-        <div class="field-erro" id="erro-empresa">Campo obrigatório.</div>
+      <div class="sucesso" id="sucesso">
+        <div class="sucesso-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>Chamado registrado!</h2>
+        <p>Seu pedido foi enviado com sucesso.<br>Acompanhe o andamento em <strong>Em aberto</strong>.</p>
+        <button class="btn btn-outline" onclick="novoChamado()">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Novo chamado
+        </button>
       </div>
-      <div class="field">
-        <label>Descrição do problema</label>
-        <textarea id="descricao" placeholder="Descreva o que está acontecendo..."></textarea>
-        <div class="field-erro" id="erro-descricao">Campo obrigatório.</div>
-      </div>
-      <button class="btn btn-solid btn-block" id="btn-enviar" onclick="enviarChamado()">Enviar chamado</button>
-    </div>
-    <div class="sucesso" id="sucesso">
-      <div class="sucesso-icon">
-        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <h2>Chamado registrado</h2>
-      <p>Seu pedido foi enviado.<br>Acompanhe o status em <strong>Em aberto</strong>.</p>
-      <button class="btn btn-ghost" onclick="novoChamado()">Novo chamado</button>
     </div>
   </div>
 </div>
 
 <!-- ABA: EM ABERTO -->
 <div id="aba-ver" style="display:none;">
-  <div class="content wide">
+  <div class="page wide">
     <div class="filtros">
       <input type="text" id="busca-ver" placeholder="Buscar por nome ou empresa..." oninput="filtrarAtivos()" />
       <select id="filtro-empresa-ver" onchange="filtrarAtivos()">
@@ -177,13 +263,13 @@
         <option>Berseba</option>
       </select>
     </div>
-    <div id="lista-ativos"><div class="carregando">carregando...</div></div>
+    <div id="lista-ativos"><div class="carregando">Carregando chamados...</div></div>
   </div>
 </div>
 
 <!-- ABA: FINALIZADOS -->
 <div id="aba-finalizados" style="display:none;">
-  <div class="content wide">
+  <div class="page wide">
     <div class="filtros">
       <input type="text" id="busca-fin" placeholder="Buscar por nome ou empresa..." oninput="filtrarFinalizados()" />
       <select id="filtro-empresa-fin" onchange="filtrarFinalizados()">
@@ -194,18 +280,19 @@
         <option>Berseba</option>
       </select>
     </div>
-    <div id="lista-finalizados"><div class="carregando">carregando...</div></div>
+    <div id="lista-finalizados"><div class="carregando">Carregando chamados...</div></div>
   </div>
 </div>
 
 <!-- ABA: AVISOS -->
 <div id="aba-avisos" style="display:none;">
-  <div class="content wide">
-    <div class="avisos-header">
-      <div class="dot-amber"></div>
-      <span class="avisos-header-label">Avisos do TI</span>
+  <div class="page wide">
+    <div class="avisos-topo">
+      <div class="dot"></div>
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span class="avisos-topo-label">Avisos do TI</span>
     </div>
-    <div id="lista-avisos"><div class="carregando">carregando...</div></div>
+    <div id="lista-avisos"><div class="carregando">Carregando avisos...</div></div>
   </div>
 </div>
 
@@ -224,7 +311,12 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const statusLabel = { aberto: 'Aberto', trabalhando: 'Em andamento', finalizado: 'Finalizado' };
+  const statusLabel = { aberto: 'Em aberto', trabalhando: 'Em andamento', finalizado: 'Finalizado' };
+  const statusIcon = {
+    aberto:      `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    trabalhando: `<svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>`,
+    finalizado:  `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+  };
   let todosAtivos = [], todosFinalizados = [], todosAvisos = [];
 
   const qAtivos = query(collection(db, 'chamados'), where('status', '!=', 'finalizado'), orderBy('status'), orderBy('criadoEm', 'desc'));
@@ -241,17 +333,23 @@
   function cardHtml(c, finalizado = false) {
     return `
       <div class="chamado-card ${finalizado ? 'finalizado-card' : ''}">
-        <div class="chamado-row">
-          <div>
-            <div class="chamado-nome">${c.nome}</div>
-            <div class="chamado-empresa">${c.empresa}</div>
+        <div class="chamado-top">
+          <div class="chamado-info">
+            <div class="chamado-nome">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              ${c.nome}
+            </div>
+            <div class="chamado-empresa">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              ${c.empresa}
+            </div>
             <div class="chamado-data">${fmtData(c)}</div>
-            ${c.previsao ? `<div class="chamado-previsao">Previsao: ${c.previsao}</div>` : ''}
+            ${c.previsao ? `<div class="chamado-previsao"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Previsão: ${c.previsao}</div>` : ''}
           </div>
-          <span class="badge badge-${c.status}">${statusLabel[c.status]}</span>
+          <span class="badge badge-${c.status}">${statusIcon[c.status]}${statusLabel[c.status]}</span>
         </div>
         <div class="chamado-desc">${c.descricao}</div>
-        ${c.observacao ? `<div class="obs-bloco"><div class="obs-label">OBS. TI</div>${c.observacao}</div>` : ''}
+        ${c.observacao ? `<div class="obs-bloco"><div class="obs-label"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Obs. TI</div><div class="obs-texto">${c.observacao}</div></div>` : ''}
       </div>`;
   }
 
@@ -262,7 +360,9 @@
     if (busca) lista = lista.filter(c => c.nome.toLowerCase().includes(busca) || c.empresa.toLowerCase().includes(busca));
     if (emp) lista = lista.filter(c => c.empresa === emp);
     const el = document.getElementById('lista-ativos');
-    el.innerHTML = lista.length === 0 ? '<div class="lista-vazia">nenhum chamado ativo</div>' : lista.map(c => cardHtml(c)).join('');
+    el.innerHTML = lista.length === 0
+      ? `<div class="lista-vazia"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>Nenhum chamado ativo no momento</div>`
+      : lista.map(c => cardHtml(c)).join('');
   }
 
   window.filtrarFinalizados = function() {
@@ -272,20 +372,28 @@
     if (busca) lista = lista.filter(c => c.nome.toLowerCase().includes(busca) || c.empresa.toLowerCase().includes(busca));
     if (emp) lista = lista.filter(c => c.empresa === emp);
     const el = document.getElementById('lista-finalizados');
-    el.innerHTML = lista.length === 0 ? '<div class="lista-vazia">nenhum chamado finalizado</div>' : lista.map(c => cardHtml(c, true)).join('');
+    el.innerHTML = lista.length === 0
+      ? `<div class="lista-vazia"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Nenhum chamado finalizado ainda</div>`
+      : lista.map(c => cardHtml(c, true)).join('');
   }
 
   function renderizarAvisos() {
     const el = document.getElementById('lista-avisos');
     el.innerHTML = todosAvisos.length === 0
-      ? '<div class="lista-vazia">nenhum aviso no momento</div>'
+      ? `<div class="lista-vazia"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Nenhum aviso no momento</div>`
       : todosAvisos.map(a => {
           const data = a.criadoEm ? new Date(a.criadoEm.seconds * 1000).toLocaleString('pt-BR') : '—';
-          return `<div class="aviso-card">
-            <div class="aviso-titulo">${a.titulo}</div>
-            <div class="aviso-desc">${a.descricao}</div>
-            <div class="aviso-data">${data}</div>
-          </div>`;
+          return `
+            <div class="aviso-card">
+              <div class="aviso-card-icon">
+                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div class="aviso-corpo">
+                <div class="aviso-titulo-txt">${a.titulo}</div>
+                <div class="aviso-desc-txt">${a.descricao}</div>
+                <div class="aviso-data-txt">${data}</div>
+              </div>
+            </div>`;
         }).join('');
   }
 
@@ -307,7 +415,7 @@
       document.getElementById('formulario').style.display = 'none';
       document.getElementById('sucesso').style.display = 'block';
     } catch(e) { alert('Erro ao enviar. Tente novamente.'); }
-    finally { btn.disabled = false; btn.textContent = 'Enviar chamado'; }
+    finally { btn.disabled = false; btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar chamado'; }
   }
 
   window.novoChamado = function() {
