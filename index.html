@@ -319,7 +319,7 @@
   };
   let todosAtivos = [], todosFinalizados = [], todosAvisos = [];
 
-  const qAtivos = query(collection(db, 'chamados'), where('status', '!=', 'finalizado'), orderBy('status'), orderBy('criadoEm', 'desc'));
+  const qAtivos = query(collection(db, 'chamados'), where('status', '!=', 'finalizado'), orderBy('status'), orderBy('criadoEm', 'asc'));
   onSnapshot(qAtivos, snap => { todosAtivos = snap.docs.map(d => ({ id: d.id, ...d.data() })); filtrarAtivos(); });
 
   const qFin = query(collection(db, 'chamados'), where('status', '==', 'finalizado'), orderBy('criadoEm', 'desc'));

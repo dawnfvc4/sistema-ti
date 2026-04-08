@@ -317,6 +317,8 @@
     else if (abaAtual === 'finalizados') lista = lista.filter(c => c.status === 'finalizado');
     if (busca) lista = lista.filter(c => c.nome.toLowerCase().includes(busca) || c.empresa.toLowerCase().includes(busca));
     if (emp) lista = lista.filter(c => c.empresa === emp);
+    if (abaAtual === 'finalizados') lista.sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
+    else lista.sort((a, b) => (a.criadoEm?.seconds || 0) - (b.criadoEm?.seconds || 0));
 
     const el = document.getElementById('lista-chamados');
     if (lista.length === 0) { el.innerHTML = `<div class="lista-vazia"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Nenhum chamado encontrado</div>`; return; }
