@@ -369,6 +369,8 @@
   }
 
   window.filtrarFinalizados = function() {
+    // ordena mais novo primeiro
+    todosFinalizados.sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
     const busca = document.getElementById('busca-fin').value.toLowerCase();
     const emp = document.getElementById('filtro-empresa-fin').value;
     let lista = todosFinalizados;
