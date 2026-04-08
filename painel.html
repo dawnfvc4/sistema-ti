@@ -9,7 +9,6 @@
     :root {
       --bg:        #f7f7f8;
       --surface:   #ffffff;
-      --surface2:  #f2f2f4;
       --border:    #e4e4e8;
       --border2:   #d0d0d6;
       --text:      #111114;
@@ -49,6 +48,7 @@
     .btn-login { width: 100%; margin-top: 8px; padding: 10px; background: var(--text); color: white; border: none; border-radius: var(--radius); font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s; }
     .btn-login svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2; }
     .btn-login:hover { background: #2a2a30; }
+    .btn-login:disabled { background: var(--border2); cursor: not-allowed; }
     .login-erro { font-size: 12px; color: var(--red); margin-top: 10px; display: none; background: var(--red-bg); border: 1px solid var(--red-b); border-radius: var(--radius); padding: 8px 12px; }
 
     /* PAINEL */
@@ -62,7 +62,6 @@
     .btn-sair svg { width: 13px; height: 13px; stroke: var(--text2); fill: none; stroke-width: 2; }
     .btn-sair:hover { border-color: var(--border2); color: var(--text); }
 
-    /* TABS */
     .tabs { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; overflow-x: auto; }
     .tabs::-webkit-scrollbar { display: none; }
     .tab { display: flex; align-items: center; gap: 6px; padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--text2); background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
@@ -72,16 +71,13 @@
     .tab.tab-avisos.ativo { color: var(--amber); border-bottom-color: var(--amber); }
     .tab.tab-avisos:hover { color: var(--amber); }
 
-    /* CONTEUDO */
     .conteudo { padding: 24px; max-width: 1000px; margin: 0 auto; }
 
-    /* FILTROS */
     .filtros { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
     .filtros input, .filtros select { padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: var(--sans); font-size: 13px; outline: none; transition: border-color 0.15s; }
     .filtros input:focus, .filtros select:focus { border-color: var(--border2); }
     .filtros input { flex: 1; min-width: 160px; }
 
-    /* CARDS */
     .chamado-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 8px; transition: box-shadow 0.15s; }
     .chamado-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
     .chamado-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -104,7 +100,6 @@
     .obs-label svg { width: 10px; height: 10px; stroke: var(--amber); fill: none; stroke-width: 2; }
     .obs-texto { font-size: 12px; color: var(--text2); line-height: 1.55; }
 
-    /* AÇÕES */
     .chamado-acoes { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
     .campo-acao { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; }
     .campo-acao label { font-size: 11px; font-weight: 500; color: var(--text2); }
@@ -117,20 +112,18 @@
     .btn-primary { background: var(--text); color: white; border-color: var(--text); }
     .btn-primary:hover { background: #2a2a30; }
     .btn-primary:disabled { background: var(--border2); color: var(--text3); border-color: var(--border2); cursor: not-allowed; }
-    .btn-outline { background: white; color: var(--text2); border-color: var(--border); }
-    .btn-outline:hover { border-color: var(--border2); color: var(--text); }
     .btn-danger { background: white; color: var(--red); border-color: var(--border); }
     .btn-danger:hover { background: var(--red-bg); border-color: var(--red-b); }
     .btn-amber { background: var(--amber); color: white; border-color: var(--amber); }
     .btn-amber:hover { background: #9a4508; }
 
-    /* AVISOS */
     .aviso-form { background: var(--surface); border: 1px solid var(--amber-b); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; }
     .aviso-form-title { font-size: 13px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
     .aviso-form-title svg { width: 14px; height: 14px; stroke: var(--amber); fill: none; stroke-width: 1.75; }
     .aviso-form input, .aviso-form textarea { width: 100%; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: var(--sans); font-size: 13px; outline: none; margin-bottom: 8px; transition: border-color 0.15s; }
     .aviso-form input:focus, .aviso-form textarea:focus { border-color: var(--border2); }
     .aviso-form textarea { min-height: 72px; resize: vertical; }
+
     .aviso-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; transition: box-shadow 0.15s; }
     .aviso-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
     .aviso-card-icon { width: 32px; height: 32px; border-radius: var(--radius); background: var(--amber-bg); border: 1px solid var(--amber-b); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -140,15 +133,15 @@
     .aviso-desc-txt { font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.6; }
     .aviso-data-txt { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-top: 6px; }
 
-    .lista-vazia { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .lista-vazia svg { width: 32px; height: 32px; stroke: var(--border2); fill: none; stroke-width: 1.5; }
-    .carregando { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; }
-
-    .dot { width: 7px; height: 7px; background: var(--amber); border-radius: 50%; animation: pulse 1.8s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
     .avisos-topo { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
     .avisos-topo svg { width: 15px; height: 15px; stroke: var(--amber); fill: none; stroke-width: 1.75; }
     .avisos-topo-label { font-size: 13px; font-weight: 600; }
+    .dot { width: 7px; height: 7px; background: var(--amber); border-radius: 50%; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .lista-vazia { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .lista-vazia svg { width: 32px; height: 32px; stroke: var(--border2); fill: none; stroke-width: 1.5; }
+    .carregando { padding: 48px 20px; text-align: center; color: var(--text3); font-size: 13px; }
   </style>
 </head>
 <body>
@@ -162,18 +155,18 @@
     <div class="login-title">Painel TI</div>
     <div class="login-sub">Acesso restrito à equipe de TI</div>
     <div class="login-field">
-      <label>Usuário</label>
-      <input type="text" id="usuario" placeholder="Digite o usuário" />
+      <label>E-mail</label>
+      <input type="email" id="usuario" placeholder="seu@email.com" />
     </div>
     <div class="login-field">
       <label>Senha</label>
       <input type="password" id="senha" placeholder="••••••••" onkeydown="if(event.key==='Enter') fazerLogin()" />
     </div>
-    <button class="btn-login" onclick="fazerLogin()">
+    <button class="btn-login" id="btn-login" onclick="fazerLogin()">
       <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
       Entrar
     </button>
-    <div class="login-erro" id="login-erro">Usuário ou senha incorretos.</div>
+    <div class="login-erro" id="login-erro">E-mail ou senha incorretos.</div>
   </div>
 </div>
 
@@ -186,7 +179,7 @@
       </div>
       <span class="topbar-title">Painel TI</span>
     </div>
-    <button class="btn-sair" onclick="sair()">
+    <button class="btn-sair" onclick="fazerLogout()">
       <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Sair
     </button>
@@ -252,6 +245,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyB-_IbnqRoaFSrQ-56vF3z87p3zyRr1rw0",
@@ -264,8 +258,9 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const USUARIO = 'admin', SENHA = 'ti2024';
-  let abaAtual = 'abertos', todosChamados = [], todosAvisos = [];
+  const auth = getAuth(app);
+
+  let abaAtual = 'abertos', todosChamados = [], todosAvisos = [], listenersIniciados = false;
 
   const statusLabel = { aberto: 'Em aberto', trabalhando: 'Em andamento', finalizado: 'Finalizado' };
   const statusIcon = {
@@ -274,26 +269,43 @@
     finalizado:  `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
   };
 
-  const qChamados = query(collection(db, 'chamados'), orderBy('criadoEm', 'desc'));
-  onSnapshot(qChamados, snap => { todosChamados = snap.docs.map(d => ({ id: d.id, ...d.data() })); filtrarChamados(); });
-
-  const qAvisos = query(collection(db, 'avisos'), orderBy('criadoEm', 'desc'));
-  onSnapshot(qAvisos, snap => { todosAvisos = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderizarAvisos(); });
-
-  window.fazerLogin = function() {
-    const u = document.getElementById('usuario').value.trim();
-    const s = document.getElementById('senha').value;
-    if (u === USUARIO && s === SENHA) {
+  // Monitora login automaticamente
+  onAuthStateChanged(auth, user => {
+    if (user) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('painel').style.display = 'block';
+      if (!listenersIniciados) {
+        listenersIniciados = true;
+        const qChamados = query(collection(db, 'chamados'), orderBy('criadoEm', 'asc'));
+        onSnapshot(qChamados, snap => { todosChamados = snap.docs.map(d => ({ id: d.id, ...d.data() })); filtrarChamados(); });
+        const qAvisos = query(collection(db, 'avisos'), orderBy('criadoEm', 'desc'));
+        onSnapshot(qAvisos, snap => { todosAvisos = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderizarAvisos(); });
+      }
     } else {
-      document.getElementById('login-erro').style.display = 'block';
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('painel').style.display = 'none';
+    }
+  });
+
+  window.fazerLogin = async function() {
+    const email = document.getElementById('usuario').value.trim();
+    const senha = document.getElementById('senha').value;
+    const erroEl = document.getElementById('login-erro');
+    const btn = document.getElementById('btn-login');
+    erroEl.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Entrando...';
+    try {
+      await signInWithEmailAndPassword(auth, email, senha);
+    } catch(e) {
+      erroEl.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Entrar`;
     }
   }
 
-  window.sair = function() {
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('painel').style.display = 'none';
+  window.fazerLogout = async function() {
+    await signOut(auth);
     document.getElementById('usuario').value = '';
     document.getElementById('senha').value = '';
   }
@@ -311,12 +323,13 @@
   window.filtrarChamados = function() {
     const busca = document.getElementById('busca').value.toLowerCase();
     const emp = document.getElementById('filtro-empresa').value;
-    let lista = todosChamados;
+    let lista = [...todosChamados];
     if (abaAtual === 'abertos') lista = lista.filter(c => c.status === 'aberto');
     else if (abaAtual === 'andamento') lista = lista.filter(c => c.status === 'trabalhando');
     else if (abaAtual === 'finalizados') lista = lista.filter(c => c.status === 'finalizado');
     if (busca) lista = lista.filter(c => c.nome.toLowerCase().includes(busca) || c.empresa.toLowerCase().includes(busca));
     if (emp) lista = lista.filter(c => c.empresa === emp);
+    // Finalizados: mais novo primeiro. Abertos/Andamento: mais antigo primeiro
     if (abaAtual === 'finalizados') lista.sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
     else lista.sort((a, b) => (a.criadoEm?.seconds || 0) - (b.criadoEm?.seconds || 0));
 
@@ -367,7 +380,7 @@
                 Salvar
               </button>
               <button class="btn btn-danger" onclick="excluirChamado('${c.id}')">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M9 6V4h6v2"/></svg>
                 Excluir
               </button>
             </div>
@@ -409,7 +422,7 @@
   window.excluirAviso = async function(id) {
     if (!confirm('Excluir este aviso?')) return;
     try { await deleteDoc(doc(db, 'avisos', id)); }
-    catch(e) { alert('Erro ao excluir.'); }
+    catch(e) { alert('Erro ao excluir aviso.'); }
   }
 
   function renderizarAvisos() {
